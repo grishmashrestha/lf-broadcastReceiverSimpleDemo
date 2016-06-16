@@ -3,6 +3,7 @@ package com.lftechnology.samplebroadcastreceiverexample;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -63,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-//                URL url = new URL("http://www.clipartbest.com/cliparts/9i4/o8L/9i4o8LL6T.png");
-                URL url = new URL("http://image.shutterstock.com/z/stock-vector-smiling-baby-whale-cartoon-illustration-76588003.jpg");
+                URL url = new URL("http://www.clipartbest.com/cliparts/9i4/o8L/9i4o8LL6T.png");
+//                URL url = new URL("http://image.shutterstock.com/z/stock-vector-smiling-baby-whale-cartoon-illustration-76588003.jpg");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
 
                 File SDCardRoot = getFilesDir();
 
-                File file = new File(SDCardRoot, "test.png");
+                File file = new File(Environment.getExternalStorageDirectory(), "/test.png");
                 FileOutputStream fileOutput = new FileOutputStream(file);
                 InputStream inputStream = urlConnection.getInputStream();
                 int totalSize = urlConnection.getContentLength();
