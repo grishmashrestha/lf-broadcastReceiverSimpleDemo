@@ -8,6 +8,10 @@ import android.widget.Toast;
 public class ChargerStatusReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "Power Connected", Toast.LENGTH_SHORT).show();
+        if (intent.getAction().equals(Intent.ACTION_AIRPLANE_MODE_CHANGED)) {
+            Toast.makeText(context, "Airplane mode status changed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Power Connected", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //        register here if it has not been registered at the manifest file
 //        registerReceiver(testReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         registerReceiver(chargerStatusReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
+        registerReceiver(chargerStatusReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
     }
 
     @Override
