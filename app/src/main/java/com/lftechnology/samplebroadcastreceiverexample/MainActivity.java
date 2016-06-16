@@ -18,15 +18,17 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
-    TestReceiver testReceiver;
-    private String TEST_BROADCAST = "testBroadcast";
+        private String TEST_BROADCAST = "testBroadcast";
+    //    TestReceiver testReceiver;
+    ChargerStatusReceiver chargerStatusReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        testReceiver = new TestReceiver();
+//        testReceiver = new TestReceiver();
+        chargerStatusReceiver = new ChargerStatusReceiver();
+
     }
 
     @Override
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 //        register here if it has not been registered at the manifest file
 //        registerReceiver(testReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
+        registerReceiver(chargerStatusReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
     }
 
     @Override
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 //        unregister here if registered dynamically
 //        unregisterReceiver(testReceiver);
+        unregisterReceiver(chargerStatusReceiver);
     }
 
     public void downloadImage(View view) {
@@ -48,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
         new MyAsyncTask().execute();
     }
 
-    public class MyAsyncTask extends AsyncTask<Void,Void,Void>
-    {
+    public class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -69,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
 
-                File SDCardRoot = getFilesDir();
-
                 File file = new File(Environment.getExternalStorageDirectory(), "/test.png");
                 FileOutputStream fileOutput = new FileOutputStream(file);
                 InputStream inputStream = urlConnection.getInputStream();
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 int downloadedSize = 0;
                 byte[] buffer = new byte[1024];
                 int bufferLength = 0;
-                while((bufferLength = inputStream.read(buffer)) > 0) {
+                while ((bufferLength = inputStream.read(buffer)) > 0) {
                     fileOutput.write(buffer, 0, bufferLength);
                     downloadedSize += bufferLength;
                     updateProgress(downloadedSize, totalSize);
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateProgress(int downloadedSize, int totalSize) {
-        HashMap<String , Integer> hashMap = new HashMap<>();
+        HashMap<String, Integer> hashMap = new HashMap<>();
         hashMap.put("downloadedSize", downloadedSize);
         hashMap.put("totalSize", totalSize);
 
